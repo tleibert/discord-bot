@@ -1,42 +1,44 @@
 import os
+import time
 
-import discord
+from discord.ext import commands
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GUILD = os.getenv("GUILD_NAME")
 
-client = discord.Client()
+bot = commands.Bot(command_prefix="~")
 
 
-def help_message(message):
-    return message.channel.send("Help Message")
-
-
-async def clean(message):
-    for channel in message.guild.channels:
-        print(channel)
-
-
-COMMANDS = {"help": help_message, "clean": clean}
-
-
-@client.event
+@bot.event
 async def on_ready():
-    print(f"{client.user} has connected to Discord!")
-    for guild in client.guilds:
+    print(f"{bot.user.name} has connected to Discord!")
+    for guild in bot.guilds:
         print(f"Connected to {guild} (id: {guild.id})")
 
 
-@client.event
-async def on_message(message):
-    text = message.content
-    if text[0] == "~":
-        print(f"Command recognized: {text[1:]}")
+@bot.command(
+    name="clean",
+    help="Removes all bot command calls and bot-sent messages from the channel.",
+)
+async def help_message(ctx):
+    msg = await ctx.send("Cleaning...")
+    print(type(msg))
+    total_deleted = 0
+    async for message in ctx.channel.history(limit=200, before=msg.created_at):
         try:
-            command = COMMANDS[text[1:].split()[0]]
-            await command(message)
-        except KeyError:
+            if message.author == bot.user:
+                await message.delete()
+                total_deleted += 1
+            elif message.content[1:].split()[0] in bot.all_commands:
+                await message.delete()
+                total_deleted += 1
+        except IndexError:
             pass
 
+    else:
+        await msg.edit(content=f"Deleted `{total_deleted}` messages.")
+        time.sleep(1)
+        await msg.delete()
 
-client.run(TOKEN)
+
+bot.run(TOKEN)
