@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+Simple discord bot to practice async/await.
+
+TODO test C by GE library
+TODO add color command
+TODO think of more commands?
+"""
 import os
 import time
 
@@ -6,7 +14,7 @@ from discord.ext import commands
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GUILD = os.getenv("GUILD_NAME")
 
-bot = commands.Bot(command_prefix="~")
+bot = commands.Bot(command_prefix="$")
 
 
 @bot.event
@@ -20,16 +28,23 @@ async def on_ready():
     name="clean",
     help="Removes all bot commands and bot-sent messages from the channel.",
 )
-async def help_message(ctx):
+async def clean(ctx):
+    """
+    Cleans the recent messages in the channel.
+    Deletes all messages sent by the bot, and any commands
+    that were given to the bot.
+    """
     msg = await ctx.send("Cleaning...")
-    print(type(msg))
     total_deleted = 0
     async for message in ctx.channel.history(limit=200, before=msg.created_at):
         try:
             if message.author == bot.user:
                 await message.delete()
                 total_deleted += 1
-            elif message.content[1:].split()[0] in bot.all_commands:
+            elif (
+                message.content[0] == bot.command_prefix
+                and message.content[1:].split()[0] in bot.all_commands
+            ):
                 await message.delete()
                 total_deleted += 1
         except IndexError:
