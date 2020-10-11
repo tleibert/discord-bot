@@ -18,7 +18,7 @@ async def on_ready():
 
 @bot.command(
     name="clean",
-    help="Removes all bot command calls and bot-sent messages from the channel.",
+    help="Removes all bot commands and bot-sent messages from the channel.",
 )
 async def help_message(ctx):
     msg = await ctx.send("Cleaning...")
@@ -36,7 +36,7 @@ async def help_message(ctx):
             pass
 
     else:
-        await msg.edit(content=f"Deleted `{total_deleted}` messages.")
+        await msg.edit(content=f"Cleaned `{total_deleted}` messages.")
         time.sleep(1)
         await msg.delete()
 
