@@ -43,7 +43,7 @@ async def clean(ctx):
                 total_deleted += 1
             elif (
                 message.content[0] == bot.command_prefix
-                and message.content[1:].split()[0] in bot.all_commands
+                and message.content.split()[0][1:] in bot.all_commands
             ):
                 await message.delete()
                 total_deleted += 1
