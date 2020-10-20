@@ -8,6 +8,7 @@ TODO think of more commands?
 """
 import os
 import time
+from random import randint
 
 from discord.ext import commands
 
@@ -19,6 +20,9 @@ bot = commands.Bot(command_prefix="$")
 
 @bot.event
 async def on_ready():
+    """
+    Runs once the bot is connected to Discord.
+    """
     print(f"{bot.user.name} has connected to Discord!")
     for guild in bot.guilds:
         print(f"Connected to {guild} (id: {guild.id})")
@@ -36,7 +40,7 @@ async def clean(ctx):
     """
     msg = await ctx.send("Cleaning...")
     total_deleted = 0
-    async for message in ctx.channel.history(limit=200, before=msg.created_at):
+    async for message in ctx.channel.history(limit=50, before=msg.created_at):
         try:
             if message.author == bot.user:
                 await message.delete()
@@ -54,6 +58,26 @@ async def clean(ctx):
         await msg.edit(content=f"Cleaned `{total_deleted}` messages.")
         time.sleep(1)
         await msg.delete()
+
+
+@bot.command(
+    name="rtd",
+    help="Rolls a *n* sided dice, where n is an integer > 0 given as an argument.\n"
+    "Default value is 6.",
+)
+async def roll_the_dice(ctx, arg=6):
+    """
+    Rolls an n-sided dice and reports the result.
+    """
+    try:
+        num = int(arg)
+        if num <= 0:
+            await ctx.send("Must be a number > 0!")
+            return
+
+        await ctx.send(f"You rolled a `{randint(1, num)}`")
+    except ValueError:
+        await ctx.send("Not a number!")
 
 
 bot.run(TOKEN)
