@@ -2,8 +2,9 @@
 """
 Simple discord bot to practice async/await.
 
-TODO test C by GE library
+~~TODO test C by GE library~~ doesn't work
 TODO add color command
+TODO implement communication with the lightbulb
 TODO think of more commands?
 """
 import os
