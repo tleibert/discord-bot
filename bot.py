@@ -94,7 +94,7 @@ async def roll_the_dice(ctx, arg=6):
 async def set_color(ctx, arg):
     up_arg = arg.upper()
     hex_color = 0
-    print(COLOR_DICT)
+
     if up_arg in COLOR_DICT:
         hex_color = COLOR_DICT[up_arg]
     else:
