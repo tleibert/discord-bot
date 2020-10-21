@@ -91,12 +91,16 @@ async def roll_the_dice(ctx, arg=6):
     help="Sets the color of my owner's desk lamp.\n"
     "Color argument can be given in hex, or as one of the 140 named HTML colors.",
 )
-async def set_color(ctx, arg):
+async def set_color(ctx, arg=None):
     """
     Sets the color of the smart light.
     Parses a color either as a named html color or
     as a hex string.
     """
+    if arg is None:
+        await ctx.send("No color provided!")
+        return
+
     up_arg = arg.upper()
     hex_color = 0
 
@@ -104,8 +108,17 @@ async def set_color(ctx, arg):
         hex_color = COLOR_DICT[up_arg]
     else:
         try:
-            hex_color = int(arg, 16)
-        except:
+            color_str = arg
+            if color_str[0] == "#":
+                color_str = color_str[1:]
+
+            if len(color_str) != 6:
+                raise ValueError
+
+            hex_color = int(color_str, 16)
+            if hex_color < 0:
+                raise ValueError
+        except ValueError:
             await ctx.send("Please input a valid HTML color name or hex color!")
             return
 
