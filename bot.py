@@ -92,6 +92,11 @@ async def roll_the_dice(ctx, arg=6):
     "Color argument can be given in hex, or as one of the 140 named HTML colors.",
 )
 async def set_color(ctx, arg):
+    """
+    Sets the color of the smart light.
+    Parses a color either as a named html color or
+    as a hex string.
+    """
     up_arg = arg.upper()
     hex_color = 0
 
@@ -107,6 +112,18 @@ async def set_color(ctx, arg):
     # TODO do stuff with color
     await ctx.send(f"Changing light to `#{str(hex(hex_color))[2:]}`")
     print(f"Changing light to {hex(hex_color)}")
+
+
+@bot.command(
+    name="listcolors", help="Lists out the possible named colors to choose from."
+)
+async def list_colors(ctx):
+    """
+    Lists the recognized color names.
+    """
+    message_body = ", ".join(COLOR_DICT).lower()
+    print(message_body)
+    await ctx.send(f"Named colors:\n```\n{message_body}\n```")
 
 
 bot.run(TOKEN)
