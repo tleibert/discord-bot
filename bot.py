@@ -2,19 +2,24 @@
 """
 Simple discord bot to practice async/await.
 
-~~TODO test C by GE library~~ doesn't work
+~~test C by GE library~~ doesn't work
 TODO add color command
 TODO implement communication with the lightbulb
 TODO think of more commands?
 """
+import json
 import os
-import time
 from random import randint
+import time
+
 
 from discord.ext import commands
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GUILD = os.getenv("GUILD_NAME")
+
+with open("./colors.json") as colorfile:
+    COLOR_DICT = {name: int(code, 16) for name, code in json.load(colorfile).items()}
 
 bot = commands.Bot(command_prefix="$")
 
@@ -79,6 +84,29 @@ async def roll_the_dice(ctx, arg=6):
         await ctx.send(f"You rolled a `{randint(1, num)}`")
     except ValueError:
         await ctx.send("Not a number!")
+
+
+@bot.command(
+    name="setcolor",
+    help="Sets the color of my owner's desk lamp.\n"
+    "Color argument can be given in hex, or as one of the 140 named HTML colors.",
+)
+async def set_color(ctx, arg):
+    up_arg = arg.upper()
+    hex_color = 0
+    print(COLOR_DICT)
+    if up_arg in COLOR_DICT:
+        hex_color = COLOR_DICT[up_arg]
+    else:
+        try:
+            hex_color = int(arg, 16)
+        except:
+            await ctx.send("Please input a valid HTML color name or hex color!")
+            return
+
+    # TODO do stuff with color
+    await ctx.send(f"Changing light to `#{str(hex(hex_color))[2:]}`")
+    print(f"Changing light to {hex(hex_color)}")
 
 
 bot.run(TOKEN)
