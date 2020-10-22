@@ -135,7 +135,6 @@ async def list_colors(ctx):
     Lists the recognized color names.
     """
     message_body = ", ".join(COLOR_DICT).lower()
-    print(message_body)
     await ctx.send(f"Named colors:\n```\n{message_body}\n```")
 
 
