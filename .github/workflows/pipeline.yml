@@ -4,4 +4,9 @@ jobs:
   test:
     runs-on: ['self-hosted']
     steps:
-      - run: echo "Test!!!"
+      - id: test
+        run: echo "Test!!!"
+      - id: step1
+        run: echo "::set-output name=test::hello"
+      - id: step2
+        run: echo "::set-output name=test::world"
