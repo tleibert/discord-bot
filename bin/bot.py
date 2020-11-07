@@ -18,7 +18,7 @@ from discord.ext import commands
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GUILD = os.getenv("GUILD_NAME")
 
-with open("./colors.json") as colorfile:
+with open("../resources/colors.json") as colorfile:
     COLOR_DICT = {name: int(code, 16) for name, code in json.load(colorfile).items()}
 
 bot = commands.Bot(command_prefix="$")
@@ -138,9 +138,7 @@ async def list_colors(ctx):
     await ctx.send(f"Named colors:\n```\n{message_body}\n```")
 
 
-@bot.command(
-    name="colorlist"
-)
+@bot.command(name="colorlist")
 async def color_list(ctx):
     """
     Alternative name for `list_colors`.
