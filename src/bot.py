@@ -138,4 +138,14 @@ async def list_colors(ctx):
     await ctx.send(f"Named colors:\n```\n{message_body}\n```")
 
 
+@bot.command(
+    name="colorlist"
+)
+async def color_list(ctx):
+    """
+    Alternative name for `list_colors`.
+    """
+    await list_colors(ctx)
+
+
 bot.run(TOKEN)
