@@ -2,10 +2,6 @@ name: pipeline
 on: [push]
 jobs:
   test:
-    runs-on: ['self-hosted', 'X64']
+    runs-on: ['self-hosted']
     steps:
       - run: echo "Test!!!"
-      - run: pwd
-      - run: ls -la
-      - run: ls ..
-      - run: ls ../..
