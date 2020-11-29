@@ -21,6 +21,9 @@ from discord.ext import commands
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GUILD = os.getenv("GUILD_NAME")
 
+COLOR_DICT = {}
+LINKS = {}
+
 with open("resources/colors.json") as colorfile:
     COLOR_DICT = {name: int(code, 16) for name, code in json.load(colorfile).items()}
 
@@ -156,6 +159,21 @@ async def color_list(ctx):
 async def jerma_post(ctx):
     """ Posts jerma stuff duh """
     await ctx.send(choice(list(LINKS["jerma"].values())))
+
+
+@bot.command(name="reload")
+async def reload():
+    """
+    Reloads the bot's configuration files
+    """
+
+    with open("resources/colors.json") as colorfile:
+        COLOR_DICT.update(
+            {name: int(code, 16) for name, code in json.load(colorfile).items()}
+        )
+
+    with open("resources/links.yml") as links:
+        LINKS.update(yaml.load(links, yaml.SafeLoader))
 
 
 bot.run(TOKEN)
