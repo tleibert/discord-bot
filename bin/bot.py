@@ -21,10 +21,10 @@ from discord.ext import commands
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GUILD = os.getenv("GUILD_NAME")
 
-with open("../resources/colors.json") as colorfile:
+with open("resources/colors.json") as colorfile:
     COLOR_DICT = {name: int(code, 16) for name, code in json.load(colorfile).items()}
 
-with open("../resources/links.yml") as links:
+with open("resources/links.yml") as links:
     LINKS = yaml.load(links, yaml.SafeLoader)
 
 bot = commands.Bot(command_prefix="$")
