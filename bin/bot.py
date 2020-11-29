@@ -8,10 +8,13 @@ TODO implement communication with the lightbulb
 TODO think of more commands?
 """
 import json
+
 import os
-from random import randint
+from random import choice, randint
 import time
 
+import pylibyaml
+import yaml
 
 from discord.ext import commands
 
@@ -20,6 +23,9 @@ GUILD = os.getenv("GUILD_NAME")
 
 with open("../resources/colors.json") as colorfile:
     COLOR_DICT = {name: int(code, 16) for name, code in json.load(colorfile).items()}
+
+with open("../resources/links.yml") as links:
+    LINKS = yaml.load(links, yaml.SafeLoader)
 
 bot = commands.Bot(command_prefix="$")
 
@@ -144,6 +150,12 @@ async def color_list(ctx):
     Alternative name for `list_colors`.
     """
     await list_colors(ctx)
+
+
+@bot.command(name="jerma")
+async def jerma_post(ctx):
+    """ Posts jerma stuff duh """
+    await ctx.send(choice(list(LINKS["jerma"].values())))
 
 
 bot.run(TOKEN)
