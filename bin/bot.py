@@ -132,8 +132,8 @@ async def set_color(ctx, arg=None):
             return
 
     # TODO do stuff with color
-    await ctx.send(f"Changing light to `#{str(hex(hex_color))[2:]}`")
-    print(f"Changing light to {hex(hex_color)}")
+    await ctx.send(f"Changing light to `#{hex_color:06x}`")
+    print(f"Changing light to {hex_color:06x}")
 
 
 @bot.command(
