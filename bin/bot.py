@@ -185,6 +185,8 @@ async def experimental_clean(ctx):
 
 def add_message(channel, message):
     """ Adds a message to the global dict """
+    print(sent_messages[channel])
+    print(len(sent_messages[channel]))
     if not sent_messages[channel]:
         sent_messages[channel] = [message]
     else:
