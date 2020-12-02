@@ -7,6 +7,7 @@ TODO add color command
 TODO implement communication with the lightbulb
 TODO think of more commands?
 """
+from collections import defaultdict
 import json
 
 import os
@@ -32,6 +33,7 @@ with open("resources/links.yml") as links:
 
 bot = commands.Bot(command_prefix="$")
 
+sent_messages = defaultdict()
 
 @bot.event
 async def on_ready():
@@ -90,10 +92,10 @@ async def roll_the_dice(ctx, arg=6):
             await ctx.send("Must be a number > 0!")
             return
 
-        await ctx.send(f"You rolled a `{randint(1, num)}`")
+        message = await ctx.send(f"You rolled a `{randint(1, num)}`")
     except ValueError:
-        await ctx.send("Not a number!")
-
+        message = await ctx.send("Not a number!")
+    add_message(ctx.channel, message)
 
 @bot.command(
     name="setcolor",
@@ -175,5 +177,17 @@ async def reload():
     with open("resources/links.yml") as links:
         LINKS.update(yaml.load(links, yaml.SafeLoader))
 
+
+@bot.command(name="exp_clean")
+async def experimental_clean(ctx):
+    for message in sent_messages[ctx.channel]:
+        await message.delete()
+
+def add_message(channel, message):
+    """ Adds a message to the global dict """
+    if not sent_messages[channel]:
+        sent_messages[channel] = [message]
+    else:
+        sent_messages[channel].append(message)
 
 bot.run(TOKEN)
