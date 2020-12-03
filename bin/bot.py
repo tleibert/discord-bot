@@ -65,7 +65,7 @@ async def clean(ctx):
 
     else:
         await ctx.channel.delete_messages(to_delete)
-        await msg.edit(content=f"Cleaned `{len(to_delete)}` messages.")
+        await msg.edit(content=f"Cleaned `{len(to_delete) - 1}` messages.")
         time.sleep(1)
         await msg.delete()
 
