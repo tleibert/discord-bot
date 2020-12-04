@@ -13,7 +13,6 @@ import os
 from random import choice, randint
 import time
 
-import pylibyaml
 import yaml
 
 from discord.ext import commands
@@ -28,7 +27,7 @@ with open("resources/colors.json") as colorfile:
     COLOR_DICT = {name: int(code, 16) for name, code in json.load(colorfile).items()}
 
 with open("resources/links.yml") as links:
-    LINKS = yaml.load(links, yaml.SafeLoader)
+    LINKS = yaml.load(links, yaml.CLoader)
 
 bot = commands.Bot(command_prefix="$")
 
