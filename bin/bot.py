@@ -54,25 +54,21 @@ async def clean(ctx):
     that were given to the bot.
     """
     msg = await ctx.send("Cleaning...")
-    to_delete = []
-    async for message in ctx.channel.history(limit=50, before=msg.created_at):
-        try:
-            if message.author == bot.user or (
-                message.content[0] == bot.command_prefix
-                and message.content.split()[0][1:] in bot.all_commands
-            ):
-                to_delete.append(message)
+    to_delete = [
+        message
+        async for message in ctx.channel.history(limit=50, before=msg.created_at)
+        if message.author == bot.user
+        or len(message.content) > 1
+        and message.content[0] == bot.command_prefix
+        and message.content.split()[0][1:] in bot.all_commands
+    ]
 
-        except IndexError:
-            pass
-
-    else:
-        await ctx.channel.delete_messages(to_delete)
-        await msg.edit(
-            content=f"Cleaned `{len(to_delete) - 1}` messages. :put_litter_in_its_place:"
-        )
-        time.sleep(1)
-        await msg.delete()
+    await ctx.channel.delete_messages(to_delete)
+    await msg.edit(
+        content=f"Cleaned `{len(to_delete) - 1}` messages. :put_litter_in_its_place:"
+    )
+    time.sleep(1)
+    await msg.delete()
 
 
 @bot.command(
