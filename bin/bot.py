@@ -13,9 +13,6 @@ from asyncpraw import Reddit
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GUILD = os.getenv("GUILD_NAME")
 
-COLOR_DICT = {}
-LINKS = {}
-
 with open("resources/colors.json") as colorfile:
     COLOR_DICT = {name: int(code, 16) for name, code in json.load(colorfile).items()}
 
