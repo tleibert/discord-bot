@@ -6,11 +6,11 @@ import os
 from random import choice, randint
 import time
 
-import yaml
-from discord.ext import commands
 from asyncpraw import Reddit
+from discord.ext import commands
+import yaml
 
-TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+
 GUILD = os.getenv("GUILD_NAME")
 
 with open("resources/colors.json") as colorfile:
@@ -198,4 +198,4 @@ async def okay_buddy_fortress(ctx):
     )
 
 
-bot.run(TOKEN)
+bot.run(os.getenv("DISCORD_BOT_TOKEN"))
