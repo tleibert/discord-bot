@@ -2,13 +2,13 @@
 Simple discord bot to practice async/await.
 """
 import json
-
 import os
 from random import choice, randint
 import time
 
 import yaml
 from discord.ext import commands
+from asyncpraw import Reddit
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 GUILD = os.getenv("GUILD_NAME")
@@ -23,6 +23,12 @@ with open("resources/links.yml") as links:
     LINKS = yaml.load(links, yaml.CLoader)
 
 bot = commands.Bot(command_prefix="$")
+
+reddit = Reddit(
+    client_id=os.getenv("REDDIT_CLIENT_ID"),
+    client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
+    user_agent="test user agent",
+)
 
 
 @bot.event
@@ -162,6 +168,20 @@ async def reload():
 
     with open("resources/links.yml") as links:
         LINKS.update(yaml.load(links, yaml.SafeLoader))
+
+
+@bot.command(name="jarma")
+async def jerma_reddit(ctx):
+    """
+    Grabs a random post from the jerma985 subreddit and posts it to discord.
+    """
+    sub = await reddit.subreddit("jerma985")
+    post = await sub.random()
+    # retry until we get a link post
+    while post.selftext != "":
+        post = await sub.random()
+    print(f"Random post title: {post.title}")
+    await ctx.send(post.url)
 
 
 bot.run(TOKEN)
