@@ -170,18 +170,35 @@ async def reload():
         LINKS.update(yaml.load(links, yaml.SafeLoader))
 
 
+async def scrape_reddit_linkpost(subreddit):
+    """
+    Grabs a random linkpost off of the given subreddit
+    """
+
+    sub = await reddit.subreddit(subreddit)
+    post = await sub.random()
+    # retry until we get a link post
+    while post.selftext != "":
+        post = await sub.random()
+    return post.url
+
+
 @bot.command(name="jarma")
 async def jerma_reddit(ctx):
     """
     Grabs a random post from the jerma985 subreddit and posts it to discord.
     """
-    sub = await reddit.subreddit("jerma985")
-    post = await sub.random()
-    # retry until we get a link post
-    while post.selftext != "":
-        post = await sub.random()
-    print(f"Random post title: {post.title}")
-    await ctx.send(post.url)
+    await ctx.send(await scrape_reddit_linkpost("jerma985"))
+
+
+@bot.command(name="tf2")
+async def okay_buddy_fortress(ctx):
+    """
+    Grabs a random post from the okaybuddyfortress subreddit and posts it to discord.
+    """
+    await ctx.send(
+        await scrape_reddit_linkpost(choice(("okaybuddyfortress", "tf2shitposterclub")))
+    )
 
 
 bot.run(TOKEN)
