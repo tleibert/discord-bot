@@ -1,11 +1,5 @@
-# -*- coding: utf-8 -*-
 """
 Simple discord bot to practice async/await.
-
-~~test C by GE library~~ doesn't work
-TODO add color command
-TODO implement communication with the lightbulb
-TODO think of more commands?
 """
 import json
 
@@ -14,7 +8,6 @@ from random import choice, randint
 import time
 
 import yaml
-
 from discord.ext import commands
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
