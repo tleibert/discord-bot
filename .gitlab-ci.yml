@@ -1,0 +1,11 @@
+stages:
+ - test
+ - deploy
+
+default:
+  tags:
+    - "raspi"
+
+test:
+  script:
+    - echo "Hello World"
