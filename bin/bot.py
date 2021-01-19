@@ -198,4 +198,12 @@ async def okay_buddy_fortress(ctx):
     )
 
 
+@bot.command(name="brit")
+async def ok_mate(ctx):
+    """
+    Grabs a random post from the okmatewanker subreddit and posts it to discord.
+    """
+    await ctx.send(await scrape_reddit_linkpost("okmatewanker"))
+
+
 bot.run(os.getenv("DISCORD_BOT_TOKEN"))
