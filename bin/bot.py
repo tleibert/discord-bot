@@ -1,10 +1,10 @@
 """
 Simple discord bot to practice async/await.
 """
+import asyncio
 import json
 import os
 from random import choice, randint
-import time
 
 from asyncpraw import Reddit
 from discord.ext import commands
@@ -17,7 +17,10 @@ with open("resources/colors.json") as colorfile:
     COLOR_DICT = {name: int(code, 16) for name, code in json.load(colorfile).items()}
 
 with open("resources/links.yml") as links:
-    LINKS = yaml.load(links, yaml.SafeLoader)
+    LINKS = yaml.safe_load(links)
+
+with open("resources/copypastas.yml") as pastas:
+    PASTAS = yaml.safe_load(pastas)
 
 bot = commands.Bot(command_prefix="$")
 
@@ -36,6 +39,17 @@ async def on_ready():
     print(f"{bot.user.name} has connected to Discord!")
     for guild in bot.guilds:
         print(f"Connected to {guild} (id: {guild.id})")
+
+
+@bot.event
+async def on_message(message):
+    """
+    Runs every time a message is received
+    """
+    if message.author != bot.user and "based" in message.content.lower():
+        msg = await message.channel.send(PASTAS["based"])
+        await asyncio.sleep(7)
+        await msg.delete()
 
 
 @bot.command(
@@ -62,7 +76,7 @@ async def clean(ctx):
     await msg.edit(
         content=f"Cleaned `{len(to_delete) - 1}` messages. :put_litter_in_its_place:"
     )
-    time.sleep(1)
+    await asyncio.sleep(1)
     await msg.delete()
 
 
