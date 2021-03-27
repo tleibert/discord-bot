@@ -51,6 +51,8 @@ async def on_message(message):
         await asyncio.sleep(7)
         await msg.delete()
 
+    await bot.process_commands(message)
+
 
 @bot.command(
     name="clean",
