@@ -1,3 +1,0 @@
-discord.py>=1.5
-asyncpraw
-pyyaml
